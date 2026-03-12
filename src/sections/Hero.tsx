@@ -1,5 +1,5 @@
 import { profile } from '../data/profile'
-import { FaGithub, FaLinkedin, FaFileAlt } from 'react-icons/fa'
+import {FaFileAlt } from 'react-icons/fa'
 
 function Hero() {
   return (
