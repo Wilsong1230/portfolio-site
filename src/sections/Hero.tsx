@@ -5,6 +5,9 @@ function Hero() {
   return (
     <section id="home" className="min-h-screen px-6 py-24 flex items-center">
       <div className="mx-auto max-w-5xl">
+        <div className="absolute inset-0 -z-10 flex justify-center">
+            <div className="h-[500px] w-[500px] rounded-full bg-indigo-500 blur-[120px] opacity-20"></div>
+        </div>
         <p className="text-sm uppercase tracking-[0.2em] text-zinc-400">
           Portfolio
         </p>

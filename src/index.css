@@ -3,3 +3,7 @@
 html {
   scroll-behavior: smooth;
 }
+ html, body, #root {
+  background: #020617;
+  min-height: 100%;
+}
