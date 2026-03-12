@@ -5,6 +5,7 @@ import Contact from './sections/Contact'
 import Hero from './sections/Hero'
 import Projects from './sections/Projects'
 import Skills from './sections/Skills'
+import CommandPalette from './components/terminal/CommandPallete'
 
 function App() {
   return (
@@ -18,8 +19,11 @@ function App() {
         <Activity />
         <Contact />
       </main>
+      <CommandPalette />
     </div>
   )
 }
+
+
 
 export default App

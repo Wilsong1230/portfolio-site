@@ -11,7 +11,7 @@ export const profile = {
   education: 'B.S. in Computer Science',
   location: 'Florida',
   links: {
-    github: 'https://github.com/yourusername',
+    github: 'https://github.com/Wilsong1230',
     linkedin: 'https://linkedin.com/in/yourusername',
     resume: '/resume.pdf',
   },

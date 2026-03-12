@@ -1,4 +1,5 @@
 import { profile } from '../data/profile'
+import { FaGithub, FaLinkedin, FaFileAlt } from 'react-icons/fa'
 
 function Hero() {
   return (
@@ -33,6 +34,7 @@ function Hero() {
             className="rounded-xl border border-white/15 px-5 py-3 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/5"
           >
             Download Resume
+                <FaFileAlt className="inline ml-2" />
           </a>
         </div>
       </div>
