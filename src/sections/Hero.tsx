@@ -3,7 +3,7 @@ import {FaFileAlt } from 'react-icons/fa'
 
 function Hero() {
   return (
-    <section id="home" className="min-h-screen px-6 py-24 flex items-center">
+    <section id="home" className="px-6 pt-16 pb-24">
       <div className="mx-auto max-w-5xl">
         <div className="absolute inset-0 -z-10 flex justify-center">
             <div className="h-[500px] w-[500px] rounded-full bg-indigo-500 blur-[120px] opacity-20"></div>

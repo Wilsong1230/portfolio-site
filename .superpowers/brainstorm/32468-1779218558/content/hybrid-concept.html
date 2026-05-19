@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hybrid Concept — Wilson Gomez Portfolio</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #060810;
+    color: #e2e8f0;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Circuit board SVG background */
+  .circuit-bg {
+    position: fixed;
+    inset: 0;
+    opacity: 0.07;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Atmospheric glows */
+  .glow-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-1 {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+    top: -100px; left: 50%; transform: translateX(-50%);
+  }
+  .glow-2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(34,197,94,0.10) 0%, transparent 70%);
+    bottom: 100px; right: -100px;
+  }
+  .glow-3 {
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,146,60,0.08) 0%, transparent 70%);
+    top: 40%; left: -80px;
+  }
+
+  /* Layout */
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+
+  /* Navbar */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+    margin-bottom: 28px;
+  }
+  .nav-logo {
+    font-size: 12px;
+    color: #6366f1;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .nav-logo span { color: rgba(34,197,94,0.9); }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    font-size: 11px;
+    color: #64748b;
+    list-style: none;
+  }
+  .nav-links li:hover { color: #e2e8f0; cursor: pointer; }
+  .nav-badge {
+    font-size: 10px;
+    color: rgba(34,197,94,0.8);
+    border: 1px solid rgba(34,197,94,0.3);
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  /* Bento grid */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 14px;
+  }
+
+  .card {
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.025);
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .card:hover {
+    border-color: rgba(99,102,241,0.35);
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* Card spans */
+  .hero-card    { grid-column: span 7; min-height: 240px; }
+  .status-card  { grid-column: span 5; min-height: 240px; }
+  .terminal-card{ grid-column: span 5; min-height: 200px; }
+  .skills-card  { grid-column: span 4; min-height: 200px; }
+  .activity-card{ grid-column: span 3; min-height: 200px; }
+  .projects-card{ grid-column: span 8; min-height: 180px; }
+  .contact-card { grid-column: span 4; min-height: 180px; }
+
+  /* Hero card internals */
+  .hex-label {
+    font-size: 10px;
+    color: rgba(34,197,94,0.6);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .hero-name {
+    font-size: 48px;
+    font-weight: 800;
+    font-family: 'SF Pro Display', system-ui, sans-serif;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #fff 30%, rgba(99,102,241,0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .hero-role {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 16px;
+    font-family: system-ui, sans-serif;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .tag {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-family: 'SF Mono', monospace;
+  }
+  .tag-indigo { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+  .tag-green  { background: rgba(34,197,94,0.12);  color: #4ade80;  border: 1px solid rgba(34,197,94,0.25); }
+  .tag-orange { background: rgba(251,146,60,0.12); color: #fb923c;  border: 1px solid rgba(251,146,60,0.25); }
+  .tag-cyan   { background: rgba(34,211,238,0.12); color: #22d3ee;  border: 1px solid rgba(34,211,238,0.25); }
+
+  .hero-btns { display: flex; gap: 10px; }
+  .btn-primary {
+    font-size: 12px; font-family: 'SF Mono', monospace;
+    padding: 9px 18px; border-radius: 10px;
+    background: #6366f1; color: #fff; border: none; cursor: pointer;
+  }
+  .btn-ghost {
+    font-size: 12px; font-family: 'SF Mono', monospace;
+    padding: 9px 18px; border-radius: 10px;
+    background: transparent; color: #94a3b8;
+    border: 1px solid rgba(255,255,255,0.12); cursor: pointer;
+  }
+
+  /* Circuit corner decoration */
+  .circuit-corner {
+    position: absolute;
+    bottom: 14px; right: 14px;
+    width: 70px; height: 70px;
+    opacity: 0.18;
+  }
+
+  /* Status card */
+  .status-addr {
+    font-size: 9px;
+    color: rgba(34,197,94,0.5);
+    margin-bottom: 14px;
+    letter-spacing: 0.08em;
+  }
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 11px;
+  }
+  .status-key { color: #475569; }
+  .status-val { color: #94a3b8; }
+  .status-val.green { color: rgba(34,197,94,0.9); }
+  .status-val.indigo { color: #818cf8; }
+
+  .pulse-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-right: 6px;
+    box-shadow: 0 0 6px rgba(34,197,94,0.6);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
+
+  /* Terminal card */
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .t-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .t-red  { background: #ff5f57; }
+  .t-yel  { background: #febc2e; }
+  .t-grn  { background: #28c840; }
+  .t-title { font-size: 10px; color: #475569; margin-left: auto; }
+
+  .terminal-body { font-size: 11px; line-height: 1.8; }
+  .t-prompt { color: #6366f1; }
+  .t-cmd    { color: #e2e8f0; }
+  .t-out    { color: #64748b; }
+  .t-cursor { display: inline-block; width: 7px; height: 13px; background: #6366f1; vertical-align: middle; animation: blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* Skills card */
+  .skills-label { font-size: 9px; color: #475569; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 9px;
+  }
+  .skill-name { font-size: 11px; color: #94a3b8; width: 60px; flex-shrink: 0; }
+  .skill-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 99px; overflow: hidden; }
+  .skill-fill { height: 100%; border-radius: 99px; }
+
+  /* Activity (oscilloscope) card */
+  .osc-label { font-size: 9px; color: rgba(34,197,94,0.6); letter-spacing: 0.1em; margin-bottom: 10px; }
+  .osc-screen {
+    background: #020d07;
+    border: 1px solid rgba(34,197,94,0.15);
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Projects card */
+  .projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .projects-title { font-size: 11px; color: #475569; letter-spacing: 0.12em; text-transform: uppercase; }
+  .projects-count { font-size: 10px; color: #6366f1; }
+  .project-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.015);
+  }
+  .project-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .project-info { flex: 1; }
+  .project-name { font-size: 12px; color: #e2e8f0; font-family: system-ui; margin-bottom: 2px; }
+  .project-desc { font-size: 10px; color: #475569; font-family: system-ui; }
+  .project-tags { display: flex; gap: 4px; }
+
+  /* Contact card */
+  .contact-header { font-size: 9px; color: #475569; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+  .contact-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 11px; color: #64748b; font-family: system-ui;
+    cursor: pointer;
+  }
+  .contact-link:hover { color: #e2e8f0; }
+  .contact-icon { font-size: 14px; width: 20px; text-align: center; }
+</style>
+</head>
+<body>
+
+<svg class="circuit-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="1" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <g stroke="#22c55e" stroke-width="1" fill="none" filter="url(#glow)">
+    <!-- Horizontal traces -->
+    <path d="M0 120 H400 M420 120 H700 M720 120 H1200"/>
+    <path d="M0 340 H300 M320 340 H600 M620 340 H900"/>
+    <path d="M100 560 H500 M520 560 H800"/>
+    <path d="M200 700 H900"/>
+    <!-- Vertical traces -->
+    <path d="M180 0 V200 M180 220 V500"/>
+    <path d="M450 100 V300 M450 320 V600"/>
+    <path d="M720 0 V160 M720 180 V450"/>
+    <path d="M950 200 V500 M950 520 V800"/>
+    <!-- Vias (connection dots) -->
+    <circle cx="180" cy="120" r="4" fill="#22c55e"/>
+    <circle cx="450" cy="340" r="4" fill="#22c55e"/>
+    <circle cx="720" cy="120" r="4" fill="#22c55e"/>
+    <circle cx="950" cy="340" r="4" fill="#22c55e"/>
+    <circle cx="300" cy="560" r="3" fill="#22c55e" opacity="0.6"/>
+    <circle cx="620" cy="700" r="3" fill="#22c55e" opacity="0.6"/>
+    <!-- L-bends -->
+    <path d="M950 340 H1100 V500"/>
+    <path d="M180 340 H50 V560"/>
+    <path d="M450 120 V60 H700"/>
+    <!-- IC pads -->
+    <rect x="340" y="300" width="30" height="8" rx="2" fill="#22c55e" opacity="0.4"/>
+    <rect x="340" y="316" width="30" height="8" rx="2" fill="#22c55e" opacity="0.4"/>
+    <rect x="340" y="332" width="30" height="8" rx="2" fill="#22c55e" opacity="0.4"/>
+    <rect x="800" y="100" width="8" height="30" rx="2" fill="#22c55e" opacity="0.4"/>
+    <rect x="816" y="100" width="8" height="30" rx="2" fill="#22c55e" opacity="0.4"/>
+    <rect x="832" y="100" width="8" height="30" rx="2" fill="#22c55e" opacity="0.4"/>
+  </g>
+  <!-- Copper pours -->
+  <rect x="600" y="400" width="120" height="80" rx="4" fill="rgba(251,146,60,0.04)" stroke="rgba(251,146,60,0.15)" stroke-width="1"/>
+  <rect x="100" y="200" width="80" height="60" rx="4" fill="rgba(99,102,241,0.04)" stroke="rgba(99,102,241,0.15)" stroke-width="1"/>
+</svg>
+
+<div class="glow-layer">
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
+  <div class="glow-3"></div>
+</div>
+
+<div class="page">
+
+  <!-- Navbar -->
+  <nav class="nav">
+    <div class="nav-logo">WG<span>.</span>dev</div>
+    <ul class="nav-links">
+      <li>about</li>
+      <li>projects</li>
+      <li>skills</li>
+      <li>contact</li>
+    </ul>
+    <div class="nav-badge">⬤ open to work</div>
+  </nav>
+
+  <!-- Bento Grid -->
+  <div class="bento">
+
+    <!-- HERO -->
+    <div class="card hero-card">
+      <div class="hex-label">// 0x00 — INIT</div>
+      <div class="hero-name">Wilson<br>Gomez</div>
+      <div class="hero-role" style="font-family:system-ui">Aspiring Software Engineer — CS Student · Florida</div>
+      <div class="hero-tags">
+        <span class="tag tag-indigo">Software Eng</span>
+        <span class="tag tag-green">Embedded Systems</span>
+        <span class="tag tag-orange">C / C++</span>
+        <span class="tag tag-cyan">Automation</span>
+        <span class="tag tag-indigo">React · TypeScript</span>
+      </div>
+      <div class="hero-btns">
+        <button class="btn-primary">./projects</button>
+        <button class="btn-ghost">resume.pdf ↓</button>
+      </div>
+
+      <!-- Circuit corner SVG -->
+      <svg class="circuit-corner" viewBox="0 0 70 70" fill="none">
+        <path d="M10 60 V40 H30 V20 H50" stroke="rgba(34,197,94,0.8)" stroke-width="1.5"/>
+        <circle cx="10" cy="60" r="3" fill="rgba(34,197,94,0.6)"/>
+        <circle cx="30" cy="40" r="3" fill="rgba(34,197,94,0.6)"/>
+        <circle cx="50" cy="20" r="3" fill="rgba(34,197,94,0.6)"/>
+        <path d="M50 20 H65" stroke="rgba(34,197,94,0.4)" stroke-width="1"/>
+        <path d="M10 60 V70" stroke="rgba(34,197,94,0.3)" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <!-- STATUS / SYSTEM INFO -->
+    <div class="card status-card">
+      <div class="status-addr">// SYS::STATUS · REG[0x1A]</div>
+      <div class="status-row">
+        <span class="status-key">STATUS</span>
+        <span class="status-val green"><span class="pulse-dot"></span>ACTIVE</span>
+      </div>
+      <div class="status-row">
+        <span class="status-key">ROLE</span>
+        <span class="status-val">CS_STUDENT</span>
+      </div>
+      <div class="status-row">
+        <span class="status-key">DEGREE</span>
+        <span class="status-val indigo">B.S. CompSci</span>
+      </div>
+      <div class="status-row">
+        <span class="status-key">INTERESTS</span>
+        <span class="status-val">SWE + EMBEDDED</span>
+      </div>
+      <div class="status-row">
+        <span class="status-key">LOCATION</span>
+        <span class="status-val">Florida, US</span>
+      </div>
+      <div class="status-row">
+        <span class="status-key">GITHUB</span>
+        <span class="status-val indigo">Wilsong1230</span>
+      </div>
+      <div class="status-row" style="border:none">
+        <span class="status-key">COMMITS_30D</span>
+        <span class="status-val green">██░███▓░▓ 42</span>
+      </div>
+    </div>
+
+    <!-- TERMINAL -->
+    <div class="card terminal-card">
+      <div class="terminal-bar">
+        <div class="t-dot t-red"></div>
+        <div class="t-dot t-yel"></div>
+        <div class="t-dot t-grn"></div>
+        <span class="t-title">bash — ~/portfolio</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">~/portfolio $</span> <span class="t-cmd">cat about.txt</span></div>
+        <div class="t-out">I build practical, polished software</div>
+        <div class="t-out">focused on problem solving &amp; clean arch.</div>
+        <div><span class="t-prompt">~/portfolio $</span> <span class="t-cmd">ls skills/</span></div>
+        <div class="t-out">c++  python  react  embedded  git</div>
+        <div><span class="t-prompt">~/portfolio $</span> <span class="t-cursor"></span></div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="card skills-card">
+      <div class="skills-label">// Skills · Stack</div>
+      <div class="skill-row">
+        <span class="skill-name">C / C++</span>
+        <div class="skill-bar"><div class="skill-fill" style="width:85%;background:linear-gradient(90deg,#f97316,#fb923c)"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Python</span>
+        <div class="skill-bar"><div class="skill-fill" style="width:80%;background:linear-gradient(90deg,#6366f1,#818cf8)"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">React / TS</span>
+        <div class="skill-bar"><div class="skill-fill" style="width:72%;background:linear-gradient(90deg,#22d3ee,#38bdf8)"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Embedded</span>
+        <div class="skill-bar"><div class="skill-fill" style="width:65%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Algorithms</span>
+        <div class="skill-bar"><div class="skill-fill" style="width:78%;background:linear-gradient(90deg,#a855f7,#c084fc)"></div></div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY (Oscilloscope style) -->
+    <div class="card activity-card">
+      <div class="osc-label">// COMMIT ACTIVITY · CH1</div>
+      <div class="osc-screen">
+        <svg viewBox="0 0 200 60" style="width:100%;display:block;">
+          <!-- Grid -->
+          <line x1="50" y1="0" x2="50" y2="60" stroke="rgba(34,197,94,0.08)" stroke-width="1"/>
+          <line x1="100" y1="0" x2="100" y2="60" stroke="rgba(34,197,94,0.08)" stroke-width="1"/>
+          <line x1="150" y1="0" x2="150" y2="60" stroke="rgba(34,197,94,0.08)" stroke-width="1"/>
+          <line x1="0" y1="30" x2="200" y2="30" stroke="rgba(34,197,94,0.08)" stroke-width="1"/>
+          <!-- Waveform (commit activity signal) -->
+          <polyline points="0,50 10,45 20,20 30,48 40,15 50,42 60,10 70,38 80,28 90,44 100,18 110,40 120,12 130,35 140,48 150,22 160,42 170,16 180,38 190,30 200,44"
+            fill="none" stroke="rgba(34,197,94,0.9)" stroke-width="1.5"/>
+          <!-- Fill under curve -->
+          <polyline points="0,60 0,50 10,45 20,20 30,48 40,15 50,42 60,10 70,38 80,28 90,44 100,18 110,40 120,12 130,35 140,48 150,22 160,42 170,16 180,38 190,30 200,44 200,60"
+            fill="rgba(34,197,94,0.07)"/>
+        </svg>
+        <div style="font-size:9px;color:rgba(34,197,94,0.4);margin-top:6px;text-align:right;">FREQ: 1.4kHz · AMP: 42</div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="card projects-card">
+      <div class="projects-header">
+        <span class="projects-title">// Projects · MEM[0x2F]</span>
+        <span class="projects-count">3 loaded</span>
+      </div>
+      <div class="project-row">
+        <div class="project-icon" style="background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.2);">🌀</div>
+        <div class="project-info">
+          <div class="project-name">Maze Solver in C++</div>
+          <div class="project-desc">BFS graph traversal · pathfinding algorithm</div>
+        </div>
+        <div class="project-tags">
+          <span class="tag tag-orange" style="font-size:9px">C++</span>
+          <span class="tag tag-indigo" style="font-size:9px">BFS</span>
+        </div>
+      </div>
+      <div class="project-row">
+        <div class="project-icon" style="background:rgba(34,211,238,0.10);border:1px solid rgba(34,211,238,0.2);">⚙️</div>
+        <div class="project-info">
+          <div class="project-name">Automation Tool</div>
+          <div class="project-desc">Workflow utility · repetitive task automation</div>
+        </div>
+        <div class="project-tags">
+          <span class="tag tag-cyan" style="font-size:9px">Python</span>
+        </div>
+      </div>
+      <div class="project-row">
+        <div class="project-icon" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);">🖥️</div>
+        <div class="project-info">
+          <div class="project-name">Portfolio Website</div>
+          <div class="project-desc">React · TypeScript · Tailwind v4</div>
+        </div>
+        <div class="project-tags">
+          <span class="tag tag-indigo" style="font-size:9px">React</span>
+          <span class="tag tag-cyan" style="font-size:9px">TS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="card contact-card">
+      <div class="contact-header">// Contact · TX/RX</div>
+      <div class="contact-link">
+        <span class="contact-icon">⌥</span>
+        <span>wagomez1230@gmail.com</span>
+      </div>
+      <div class="contact-link">
+        <span class="contact-icon">◈</span>
+        <span>github.com/Wilsong1230</span>
+      </div>
+      <div class="contact-link">
+        <span class="contact-icon">⊡</span>
+        <span>linkedin.com/in/wilson</span>
+      </div>
+      <div class="contact-link" style="border:none">
+        <span class="contact-icon">↓</span>
+        <span>resume.pdf</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
