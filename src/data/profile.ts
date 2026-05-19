@@ -1,18 +1,28 @@
 export const profile = {
   name: 'Wilson Gomez',
-  tagline: 'Aspiring Software Engineer',
-  intro:
-    'I build practical, polished, and engineering-driven software projects with a focus on problem solving, clean architecture, and real-world systems.',
-  about: [
-    'I am a computer science student who enjoys building projects that combine software, engineering, and hands-on problem solving.',
-    'My interests include software engineering, embedded systems, automation, and interactive tools that feel purposeful and well designed.',
-    'I care about building things that are not only functional, but also clean, thoughtful, and maintainable.',
-  ],
-  education: 'B.S. in Computer Science',
-  location: 'Florida',
+  handle: 'wagomez1230',
+  roles: ['SWE Student', 'FGCU', 'Lab Assistant', 'DOT Intern'] as const,
+  bio: 'Software engineering student with strong foundations in C++, Python, and embedded systems. Building circuit lab setups by day, writing code by night. Seeking a SWE internship to put it all to work.',
+  degree: 'B.S. Software Engineering',
+  school: 'Florida Gulf Coast University',
+  schoolShort: 'FGCU',
+  gradYear: 2027,
+  location: 'Fort Myers, FL',
+  coords: 'N 26°38′ · W 081°51′',
+  status: 'OPEN TO INTERNSHIPS',
+  stack: 'C · C++ · PY · JS',
   links: {
+    email: 'wagomez1230@gmail.com',
     github: 'https://github.com/Wilsong1230',
-    linkedin: 'https://linkedin.com/in/yourusername',
+    githubHandle: 'Wilsong1230',
+    linkedin: 'https://linkedin.com/in/wagomez',
     resume: '/resume.pdf',
   },
-}
+  strip: [
+    { label: 'DEGREE', value: 'B.S. SWE · 2027' },
+    { label: 'STATUS', value: 'OPEN TO WORK', accent: true },
+    { label: 'SCHOOL', value: 'FGCU · FL' },
+    { label: 'STACK',  value: 'C · C++ · PY · JS' },
+  ],
+  awards: ['Bright Futures', "President's Gold", 'AICE Diploma'],
+} as const
