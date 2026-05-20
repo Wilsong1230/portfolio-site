@@ -29,14 +29,6 @@ import { projects } from './data/projects'
 
 const INITIAL_ORDER = ['hero','status','avatar','current','heatmap','signal','term','skills','prj-1','prj-2','prj-3','experience','contact']
 
-function loadOrder(): string[] {
-  try {
-    const saved = JSON.parse(localStorage.getItem('tileOrder') || 'null')
-    if (Array.isArray(saved) && saved.length === INITIAL_ORDER.length && saved.every(x => INITIAL_ORDER.includes(x))) return saved
-  } catch {}
-  return INITIAL_ORDER
-}
-
 function TopBar({ overclock }: { overclock: boolean }) {
   const [t, setT] = useState(new Date())
   useEffect(() => { const id = setInterval(() => setT(new Date()), 1000); return () => clearInterval(id) }, [])
@@ -82,14 +74,14 @@ export default function App() {
   const [snakeOn, setSnakeOn] = useState(false)
   const [overclock, setOverclock] = useState(false)
 
-  const [order, setOrder] = useState<string[]>(loadOrder)
+  const order = INITIAL_ORDER
   const [hoverId, setHoverId] = useState<string | null>(null)
   const tileRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
-  useEffect(() => { window.scrollTo(0, 0) }, [])
-
-  // Persist tile order
-  useEffect(() => { try { localStorage.setItem('tileOrder', JSON.stringify(order)) } catch {} }, [order])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    try { localStorage.removeItem('tileOrder') } catch {}
+  }, [])
 
   // Apply CSS vars from palette
   useEffect(() => {
@@ -268,7 +260,7 @@ export default function App() {
         setTweak={setTweak}
         overclock={overclock}
         setOverclock={setOverclock}
-        onResetOrder={() => { setOrder(INITIAL_ORDER); try { localStorage.removeItem('tileOrder') } catch {} }}
+        onResetOrder={() => { try { localStorage.removeItem('tileOrder') } catch {} }}
         onMatrix={() => setMatrixOn(true)}
         onSnake={() => setSnakeOn(true)}
         onSpeedrun={runSpeedrun}
