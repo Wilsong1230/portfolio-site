@@ -68,7 +68,7 @@ export default function HeroTile({ accent }: Props) {
             <circle cx="18" cy="34" r="2" fill={accent} opacity="0.35" />
           </svg>
         </div>
-        <
+        <a
           href={`mailto:${profile.links.email}?subject=Job%20Opportunity%20%E2%80%94%20SWE%20Internship&body=Hi%20Wilson%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20love%20to%20connect%20about%20a%20potential%20opportunity.%0A%0A`}
           className="hcell hcell-action"
           style={{ '--ac': accent } as React.CSSProperties}
