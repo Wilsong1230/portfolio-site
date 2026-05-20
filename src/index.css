@@ -265,11 +265,42 @@ body::before {
 .hcell { padding: 10px 12px; background: rgba(7,9,18,0.6); display: flex; flex-direction: column; gap: 4px; }
 .hcell-l { font-family: var(--ff-mono); font-size: 9.5px; letter-spacing: 0.16em; color: var(--ink-3); }
 .hcell-v { font-family: var(--ff-display); font-size: 14px; color: var(--ink); font-weight: 500; }
-.hcell-action { text-decoration: none; cursor: pointer; transition: background 0.15s; }
-.hcell-action:hover { background: rgba(255,255,255,0.04); }
-.hcell-action:hover .hcell-action-v { text-shadow: 0 0 12px var(--ac, var(--accent)); }
-.hcell-action .hcell-v { transition: opacity 0.15s; }
-.hcell-action:hover .hcell-v { opacity: 0.85; }
+.hcell-action {
+  text-decoration: none; cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.hcell-action::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 20%, var(--ac, var(--accent)) 50%, transparent 80%);
+  opacity: 0;
+  transform: translateX(-100%) skewX(-10deg);
+  pointer-events: none;
+}
+.hcell-action:hover {
+  background: rgba(255,255,255,0.04);
+  box-shadow: inset 0 0 0 1px var(--ac, var(--accent)), 0 0 22px -6px var(--ac, var(--accent));
+}
+.hcell-action:hover::after {
+  opacity: 0.14;
+  transform: translateX(120%) skewX(-10deg);
+  transition: transform 0.45s ease-out, opacity 0.3s ease;
+}
+.hcell-action:hover .hcell-action-v {
+  text-shadow: 0 0 16px var(--ac, var(--accent));
+}
+.hcell-action:hover .hcell-l { color: var(--ac, var(--accent)); opacity: 0.7; }
+.hcell-action .hcell-l { transition: color 0.2s, opacity 0.2s; }
+
+/* ─── Bot mascot ─── */
+.hcell-bot { align-items: flex-start; justify-content: space-between; }
+.bot-svg { animation: bot-float 3.5s ease-in-out infinite; margin-top: 2px; }
+@keyframes bot-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+.bot-antenna-tip { animation: pulse 2s ease-in-out infinite; }
 
 /* ─── Current ─── */
 .cur { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }

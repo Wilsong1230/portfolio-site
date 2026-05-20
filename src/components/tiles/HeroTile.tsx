@@ -52,7 +52,23 @@ export default function HeroTile({ accent }: Props) {
           <div className="hcell-l">UPTIME</div>
           <div className="hcell-v" style={{ fontFamily: 'var(--ff-mono)', fontSize: 12 }}>{fmtUptime(tick)}</div>
         </div>
-        <a
+        <div className="hcell hcell-bot">
+          <div className="hcell-l">UNIT/01</div>
+          <svg className="bot-svg" width="36" height="38" viewBox="0 0 36 38" fill="none" aria-hidden="true">
+            <line x1="18" y1="0" x2="18" y2="7" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" strokeLinecap="round"/>
+            <circle cx="18" cy="0" r="2.5" fill={accent} style={{ filter: `drop-shadow(0 0 4px ${accent})` }} className="bot-antenna-tip" />
+            <rect x="3" y="7" width="30" height="20" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
+            <rect x="9" y="13" width="6" height="6" rx="1.5" fill={accent} opacity="0.9" style={{ filter: `drop-shadow(0 0 4px ${accent})` }} />
+            <rect x="21" y="13" width="6" height="6" rx="1.5" fill={accent} opacity="0.9" style={{ filter: `drop-shadow(0 0 4px ${accent})` }} />
+            <circle cx="13" cy="24" r="1.2" fill="rgba(255,255,255,0.18)"/>
+            <circle cx="18" cy="24" r="1.2" fill="rgba(255,255,255,0.18)"/>
+            <circle cx="23" cy="24" r="1.2" fill="rgba(255,255,255,0.18)"/>
+            <rect x="15" y="27" width="6" height="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+            <rect x="7" y="30" width="22" height="8" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+            <circle cx="18" cy="34" r="2" fill={accent} opacity="0.35" />
+          </svg>
+        </div>
+        <
           href={`mailto:${profile.links.email}?subject=Job%20Opportunity%20%E2%80%94%20SWE%20Internship&body=Hi%20Wilson%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20love%20to%20connect%20about%20a%20potential%20opportunity.%0A%0A`}
           className="hcell hcell-action"
           style={{ '--ac': accent } as React.CSSProperties}
