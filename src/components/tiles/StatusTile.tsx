@@ -26,19 +26,19 @@ const BOT_MESSAGES: [string, string, string][] = [
 
 function BotArena({ accent }: { accent: string }) {
   const [positions, setPositions] = useState<[number, number, number]>([8, 44, 76])
-  const [bottoms, setBottoms] = useState<[number, number, number]>([4, 20, 10])
+  const [bottoms, setBottoms] = useState<[number, number, number]>([36, 50, 42])
   const [bubbles, setBubbles] = useState<[string | null, string | null, string | null]>([null, null, null])
 
   useEffect(() => {
     const clampX = (n: number) => Math.min(Math.max(n, 4), 80)
-    const clampY = (n: number) => Math.min(Math.max(n, 4), 38)
+    const clampY = (n: number) => Math.min(Math.max(n, 36), 58)
     const ids = [
       setInterval(() => setPositions(p => [clampX(Math.random() * 76 + 4), p[1], p[2]]), 2400),
       setInterval(() => setPositions(p => [p[0], clampX(Math.random() * 76 + 4), p[2]]), 3100),
       setInterval(() => setPositions(p => [p[0], p[1], clampX(Math.random() * 76 + 4)]), 2700),
-      setInterval(() => setBottoms(b => [clampY(Math.random() * 34 + 4), b[1], b[2]]), 3300),
-      setInterval(() => setBottoms(b => [b[0], clampY(Math.random() * 34 + 4), b[2]]), 2900),
-      setInterval(() => setBottoms(b => [b[0], b[1], clampY(Math.random() * 34 + 4)]), 3700),
+      setInterval(() => setBottoms(b => [clampY(Math.random() * 22 + 36), b[1], b[2]]), 3300),
+      setInterval(() => setBottoms(b => [b[0], clampY(Math.random() * 22 + 36), b[2]]), 2900),
+      setInterval(() => setBottoms(b => [b[0], b[1], clampY(Math.random() * 22 + 36)]), 3700),
     ]
     return () => ids.forEach(clearInterval)
   }, [])
@@ -82,6 +82,44 @@ function BotArena({ accent }: { accent: string }) {
           </svg>
         </div>
       ))}
+      <svg className="city-skyline" viewBox="0 0 400 54" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        {/* ground */}
+        <line x1="0" y1="52" x2="400" y2="52" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        {/* buildings */}
+        <rect x="0"   y="38" width="26" height="14" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="28"  y="24" width="20" height="28" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="50"  y="32" width="16" height="20" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="68"  y="14" width="28" height="38" fill="rgba(255,255,255,0.02)" stroke={`color-mix(in oklab,${accent} 30%,rgba(255,255,255,0.1))`} strokeWidth="1"/>
+        <rect x="98"  y="28" width="18" height="24" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="118" y="36" width="14" height="16" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="134" y="20" width="24" height="32" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="160" y="8"  width="32" height="44" fill="rgba(255,255,255,0.02)" stroke={`color-mix(in oklab,${accent} 35%,rgba(255,255,255,0.1))`} strokeWidth="1"/>
+        <rect x="194" y="30" width="16" height="22" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="212" y="22" width="20" height="30" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="234" y="16" width="26" height="36" fill="rgba(255,255,255,0.02)" stroke={`color-mix(in oklab,${accent} 25%,rgba(255,255,255,0.1))`} strokeWidth="1"/>
+        <rect x="262" y="34" width="14" height="18" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="278" y="20" width="22" height="32" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="302" y="28" width="18" height="24" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="322" y="10" width="30" height="42" fill="rgba(255,255,255,0.02)" stroke={`color-mix(in oklab,${accent} 30%,rgba(255,255,255,0.1))`} strokeWidth="1"/>
+        <rect x="354" y="30" width="16" height="22" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        <rect x="372" y="22" width="20" height="30" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+        {/* lit windows */}
+        <rect x="74"  y="20" width="3" height="3" rx="0.5" fill={accent} opacity="0.65"/>
+        <rect x="80"  y="20" width="3" height="3" rx="0.5" fill={accent} opacity="0.35"/>
+        <rect x="74"  y="28" width="3" height="3" rx="0.5" fill={accent} opacity="0.45"/>
+        <rect x="166" y="14" width="3" height="3" rx="0.5" fill={accent} opacity="0.7"/>
+        <rect x="174" y="14" width="3" height="3" rx="0.5" fill={accent} opacity="0.35"/>
+        <rect x="166" y="22" width="3" height="3" rx="0.5" fill={accent} opacity="0.5"/>
+        <rect x="174" y="30" width="3" height="3" rx="0.5" fill={accent} opacity="0.3"/>
+        <rect x="240" y="22" width="3" height="3" rx="0.5" fill={accent} opacity="0.55"/>
+        <rect x="248" y="22" width="3" height="3" rx="0.5" fill={accent} opacity="0.3"/>
+        <rect x="328" y="16" width="3" height="3" rx="0.5" fill={accent} opacity="0.65"/>
+        <rect x="336" y="16" width="3" height="3" rx="0.5" fill={accent} opacity="0.35"/>
+        <rect x="328" y="24" width="3" height="3" rx="0.5" fill={accent} opacity="0.45"/>
+        {/* antenna on tallest building */}
+        <line x1="176" y1="8" x2="176" y2="2" stroke={accent} strokeWidth="1" opacity="0.5"/>
+        <circle cx="176" cy="2" r="1.5" fill={accent} opacity="0.85" className="bot-antenna-tip"/>
+      </svg>
     </div>
   )
 }
