@@ -83,8 +83,6 @@ export default function App() {
   const [overclock, setOverclock] = useState(false)
 
   const [order, setOrder] = useState<string[]>(loadOrder)
-  const [dragId, setDragId] = useState<string | null>(null)
-  const [overId, setOverId] = useState<string | null>(null)
   const [hoverId, setHoverId] = useState<string | null>(null)
   const tileRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
@@ -199,29 +197,6 @@ export default function App() {
     else if (action === 'resume')      window.open('/resume.pdf', '_blank')
   }
 
-  // Drag-rearrange
-  function onDragStart(e: React.DragEvent, id: string) {
-    setDragId(id)
-    e.dataTransfer.effectAllowed = 'move'
-    try { e.dataTransfer.setData('text/plain', id) } catch {}
-  }
-  function onDragOver(e: React.DragEvent, id: string) {
-    e.preventDefault(); e.dataTransfer.dropEffect = 'move'
-    if (id !== overId) setOverId(id)
-  }
-  function onDrop(e: React.DragEvent, id: string) {
-    e.preventDefault()
-    if (!dragId || dragId === id) { setDragId(null); setOverId(null); return }
-    setOrder(prev => {
-      const next = [...prev]
-      const from = next.indexOf(dragId), to = next.indexOf(id)
-      next.splice(from, 1); next.splice(to, 0, dragId)
-      return next
-    })
-    setDragId(null); setOverId(null)
-  }
-  function onDragEnd() { setDragId(null); setOverId(null) }
-
   // 3D tilt
   function onTileMove(e: React.MouseEvent, el: HTMLElement) {
     if (!t.tilt) return
@@ -271,22 +246,11 @@ export default function App() {
               className={[
                 'tile', `t-${id}`,
                 hoverId === id ? 'is-hover' : '',
-                dragId  === id ? 'is-drag'  : '',
-                overId  === id && dragId && dragId !== id ? 'is-over' : '',
               ].filter(Boolean).join(' ')}
               onMouseEnter={() => setHoverId(id)}
               onMouseMove={e => onTileMove(e, e.currentTarget)}
               onMouseLeave={e => { setHoverId(curr => curr === id ? null : curr); onTileLeave(e.currentTarget) }}
-              onDragOver={e => onDragOver(e, id)}
-              onDrop={e => onDrop(e, id)}
             >
-              <div
-                className="tile-handle"
-                draggable
-                onDragStart={e => onDragStart(e, id)}
-                onDragEnd={onDragEnd}
-                title="drag to rearrange"
-              >⋮⋮ DRAG</div>
               {renderTile(id)}
             </div>
           ))}
