@@ -307,6 +307,8 @@ body::before {
   height: 90px;
   border-top: 1px solid var(--line);
   overflow: hidden;
+  margin: 0 -18px -14px;
+  border-radius: 0 0 var(--radius) var(--radius);
 }
 .city-skyline {
   position: absolute;
@@ -395,7 +397,7 @@ body::before {
 .prj-open:hover { background: var(--accent-soft); }
 
 /* ─── Status ─── */
-.st { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }
+.st { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
 .st-time { display: flex; align-items: baseline; gap: 12px; }
 .st-clock { font-family: var(--ff-mono); font-size: 36px; font-weight: 300; letter-spacing: -0.02em; color: var(--ink); }
 .st-date { font-family: var(--ff-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.1em; }
