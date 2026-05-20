@@ -26,14 +26,19 @@ const BOT_MESSAGES: [string, string, string][] = [
 
 function BotArena({ accent }: { accent: string }) {
   const [positions, setPositions] = useState<[number, number, number]>([8, 44, 76])
+  const [bottoms, setBottoms] = useState<[number, number, number]>([4, 20, 10])
   const [bubbles, setBubbles] = useState<[string | null, string | null, string | null]>([null, null, null])
 
   useEffect(() => {
-    const clamp = (n: number) => Math.min(Math.max(n, 4), 80)
+    const clampX = (n: number) => Math.min(Math.max(n, 4), 80)
+    const clampY = (n: number) => Math.min(Math.max(n, 4), 38)
     const ids = [
-      setInterval(() => setPositions(p => [clamp(Math.random() * 76 + 4), p[1], p[2]]), 2400),
-      setInterval(() => setPositions(p => [p[0], clamp(Math.random() * 76 + 4), p[2]]), 3100),
-      setInterval(() => setPositions(p => [p[0], p[1], clamp(Math.random() * 76 + 4)]), 2700),
+      setInterval(() => setPositions(p => [clampX(Math.random() * 76 + 4), p[1], p[2]]), 2400),
+      setInterval(() => setPositions(p => [p[0], clampX(Math.random() * 76 + 4), p[2]]), 3100),
+      setInterval(() => setPositions(p => [p[0], p[1], clampX(Math.random() * 76 + 4)]), 2700),
+      setInterval(() => setBottoms(b => [clampY(Math.random() * 34 + 4), b[1], b[2]]), 3300),
+      setInterval(() => setBottoms(b => [b[0], clampY(Math.random() * 34 + 4), b[2]]), 2900),
+      setInterval(() => setBottoms(b => [b[0], b[1], clampY(Math.random() * 34 + 4)]), 3700),
     ]
     return () => ids.forEach(clearInterval)
   }, [])
@@ -57,7 +62,7 @@ function BotArena({ accent }: { accent: string }) {
   return (
     <div className="bot-arena">
       {([0, 1, 2] as const).map(i => (
-        <div key={i} className="bot-unit" style={{ left: `${positions[i]}%` }}>
+        <div key={i} className="bot-unit" style={{ left: `${positions[i]}%`, bottom: `${bottoms[i]}px` }}>
           <div className={`bot-bubble${bubbles[i] ? ' visible' : ''}`}>{bubbles[i] ?? ''}</div>
           <svg
             width="22" height="24" viewBox="0 0 36 38" fill="none"

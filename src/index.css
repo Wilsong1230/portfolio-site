@@ -26,7 +26,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-  background: var(--bg);
   color: var(--ink);
   font-family: var(--ff-body);
   font-size: 13px;
@@ -305,18 +304,17 @@ body::before {
 /* ─── Bot arena (StatusTile) ─── */
 .bot-arena {
   position: relative;
-  height: 62px;
+  height: 80px;
   border-top: 1px solid var(--line);
   overflow: hidden;
 }
 .bot-unit {
   position: absolute;
-  bottom: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  transition: left 2s ease-in-out;
+  transition: left 2s ease-in-out, bottom 2.2s ease-in-out;
 }
 .bot-bubble {
   position: relative;
