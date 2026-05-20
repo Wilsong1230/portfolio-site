@@ -15,6 +15,72 @@ function StatusRow({ label, value, dot, color }: { label: string; value: string;
   )
 }
 
+const BOT_MESSAGES: [string, string, string][] = [
+  ['PING',  'ACK',     'IDLE...'],
+  ['SYN',   'SYN-ACK', 'OK'],
+  ['BEEP',  'BOOP',    'ZZZ'],
+  ['?',     '!',       '...'],
+  ['SCAN',  'FOUND',   'LOL'],
+  ['HELLO', 'HI',      '...'],
+]
+
+function BotArena({ accent }: { accent: string }) {
+  const [positions, setPositions] = useState<[number, number, number]>([8, 44, 76])
+  const [bubbles, setBubbles] = useState<[string | null, string | null, string | null]>([null, null, null])
+
+  useEffect(() => {
+    const clamp = (n: number) => Math.min(Math.max(n, 4), 80)
+    const ids = [
+      setInterval(() => setPositions(p => [clamp(Math.random() * 76 + 4), p[1], p[2]]), 2400),
+      setInterval(() => setPositions(p => [p[0], clamp(Math.random() * 76 + 4), p[2]]), 3100),
+      setInterval(() => setPositions(p => [p[0], p[1], clamp(Math.random() * 76 + 4)]), 2700),
+    ]
+    return () => ids.forEach(clearInterval)
+  }, [])
+
+  useEffect(() => {
+    const tick = () => {
+      const set = BOT_MESSAGES[Math.floor(Math.random() * BOT_MESSAGES.length)]
+      setBubbles([set[0], null, null])
+      const t1 = setTimeout(() => setBubbles([set[0], set[1], null]), 600)
+      const t2 = setTimeout(() => setBubbles([set[0], set[1], set[2]]), 1300)
+      const t3 = setTimeout(() => setBubbles([null, null, null]), 2200)
+      return [t1, t2, t3]
+    }
+    let timeouts = tick()
+    const id = setInterval(() => { timeouts = tick() }, 4500)
+    return () => { clearInterval(id); timeouts.forEach(clearTimeout) }
+  }, [])
+
+  const delays = ['0s', '-1.2s', '-2.4s']
+
+  return (
+    <div className="bot-arena">
+      {([0, 1, 2] as const).map(i => (
+        <div key={i} className="bot-unit" style={{ left: `${positions[i]}%` }}>
+          <div className={`bot-bubble${bubbles[i] ? ' visible' : ''}`}>{bubbles[i] ?? ''}</div>
+          <svg
+            width="22" height="24" viewBox="0 0 36 38" fill="none"
+            className="bot-svg" style={{ animationDelay: delays[i] }}
+            aria-hidden="true"
+          >
+            <line x1="18" y1="0" x2="18" y2="7" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" strokeLinecap="round"/>
+            <circle cx="18" cy="0" r="2.5" fill={accent} style={{ filter: `drop-shadow(0 0 4px ${accent})` }} className="bot-antenna-tip" />
+            <rect x="3" y="7" width="30" height="20" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"/>
+            <rect x="9" y="13" width="6" height="6" rx="1.5" fill={accent} opacity="0.9" style={{ filter: `drop-shadow(0 0 4px ${accent})` }} />
+            <rect x="21" y="13" width="6" height="6" rx="1.5" fill={accent} opacity="0.9" style={{ filter: `drop-shadow(0 0 4px ${accent})` }} />
+            <circle cx="13" cy="24" r="1.2" fill="rgba(255,255,255,0.18)"/>
+            <circle cx="18" cy="24" r="1.2" fill="rgba(255,255,255,0.18)"/>
+            <circle cx="23" cy="24" r="1.2" fill="rgba(255,255,255,0.18)"/>
+            <rect x="15" y="27" width="6" height="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+            <rect x="7" y="30" width="22" height="8" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+          </svg>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function StatusTile({ accent }: Props) {
   const [now, setNow] = useState(new Date())
   useEffect(() => {
@@ -39,6 +105,7 @@ export default function StatusTile({ accent }: Props) {
         <StatusRow label="LOC"     value="Fort Myers, FL" />
         <StatusRow label="STATUS"  value="OPEN TO WORK" color={accent} />
       </div>
+      <BotArena accent={accent} />
     </div>
   )
 }
