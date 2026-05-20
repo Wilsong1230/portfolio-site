@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { profile } from '../../data/profile'
+import ContactModal from '../modals/ContactModal'
 
 interface Props { accent: string; secondary: string }
 
@@ -10,6 +11,7 @@ function fmtUptime(s: number) {
 
 export default function HeroTile({ accent }: Props) {
   const [tick, setTick] = useState(0)
+  const [contactOpen, setContactOpen] = useState(false)
   useEffect(() => {
     const id = setInterval(() => setTick(t => t + 1), 1000)
     return () => clearInterval(id)
@@ -68,16 +70,16 @@ export default function HeroTile({ accent }: Props) {
             <circle cx="18" cy="34" r="2" fill={accent} opacity="0.35" />
           </svg>
         </div>
-        <a
-          href={`mailto:${profile.links.email}?subject=Job%20Opportunity%20%E2%80%94%20SWE%20Internship&body=Hi%20Wilson%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20love%20to%20connect%20about%20a%20potential%20opportunity.%0A%0A`}
-          className="hcell hcell-action"
+        <button
+          onClick={() => setContactOpen(true)}
+          className="hcell hcell-action hcell-action-btn"
           style={{ '--ac': accent } as React.CSSProperties}
         >
           <div className="hcell-l">CONTACT</div>
           <div className="hcell-v hcell-action-v" style={{ color: accent }}>
             HIRE ME ↗
           </div>
-        </a>
+        </button>
         <a
           href={profile.links.resume}
           target="_blank"
@@ -89,6 +91,7 @@ export default function HeroTile({ accent }: Props) {
           <div className="hcell-v">VIEW RESUME →</div>
         </a>
       </div>
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} accent={accent} />
     </div>
   )
 }
