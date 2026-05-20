@@ -194,10 +194,11 @@ body::before {
 @media (max-width: 1100px) {
   .t-hero { grid-column: span 12; }
   .t-status, .t-avatar, .t-current, .t-heatmap { grid-column: span 6; }
-  .t-term { grid-column: span 12; grid-row: span 4; }
+  .t-signal, .t-term, .t-experience, .t-contact { grid-column: span 12; }
+  .t-term { grid-row: span 4; }
   .t-skills { grid-column: span 12; grid-row: span 3; }
   .t-prj-1, .t-prj-2, .t-prj-3 { grid-column: span 12; grid-row: span 4; }
-  .t-experience { grid-column: span 12; grid-row: span 4; }
+  .t-experience { grid-row: span 4; }
 }
 
 /* ─── Tile label ─── */
@@ -882,6 +883,61 @@ body.overclock .term-caret { animation-duration: 0.4s; }
   transition: background 0.15s, color 0.15s;
 }
 .cm-close-btn:hover { background: var(--ac, var(--accent)); color: var(--bg) !important; }
+
+/* ─── Mobile ─── */
+@media (max-width: 640px) {
+  /* Page layout */
+  .app { padding: 14px 12px 60px; }
+  .topbar { gap: 6px; }
+  .topbar .tb-r { display: none; }
+  .topbar .tb-l { gap: 8px; }
+
+  /* Grid — auto row height, full-width tiles */
+  .bento { grid-auto-rows: auto; gap: 10px; }
+  .t-hero, .t-status, .t-avatar, .t-current, .t-heatmap,
+  .t-signal, .t-term, .t-skills,
+  .t-prj-1, .t-prj-2, .t-prj-3,
+  .t-experience, .t-contact {
+    grid-column: span 12;
+    grid-row: span 1;
+  }
+  /* Tiles that collapse without a height anchor */
+  .t-term     { min-height: 420px; }
+  .t-heatmap  { min-height: 220px; }
+  .t-skills   { min-height: 300px; }
+  .t-status   { min-height: 260px; }
+
+  /* Hero */
+  .hero { padding: 16px; }
+  .hcell-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Status */
+  .st-clock { font-size: 26px; }
+
+  /* Contact */
+  .ct { padding: 14px; }
+  .ct-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Skills */
+  .sk-grid { grid-template-columns: 1fr; }
+
+  /* Experience — drop date + tag columns, just dot + content */
+  .ex-row { grid-template-columns: 26px 1fr; }
+  .ex-y   { display: none; }
+  .ex-tag { display: none; }
+
+  /* Signal — hide waveform, keep label + ticker */
+  .sig-wave { display: none; }
+
+  /* Terminal key-value pairs */
+  .tkv { grid-template-columns: 80px 1fr; }
+
+  /* Project modal — single column */
+  .pm-back { padding: 12px; }
+  .pm-body { grid-template-columns: 1fr; }
+  .pm-col-l { border-right: none; border-bottom: 1px solid var(--line); }
+  .pm-title { font-size: 24px; }
+}
 
 /* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
