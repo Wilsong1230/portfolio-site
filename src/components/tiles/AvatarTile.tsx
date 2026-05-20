@@ -2,7 +2,7 @@ import { profile } from '../../data/profile'
 
 interface Props { accent: string }
 
-export default function AvatarTile({ accent }: Props) {
+export default function AvatarTile(_: Props) {
   return (
     <div className="av">
       <div className="av-frame">
