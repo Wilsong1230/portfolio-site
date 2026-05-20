@@ -6,7 +6,7 @@ export default function AvatarTile({ accent }: Props) {
   return (
     <div className="av">
       <div className="av-frame">
-        <div className="av-initials" style={{ color: accent }}>WG</div>
+        <img src="/personalPhoto.jpg" alt="Wilson Gomez" className="av-photo" />
         <div className="av-cross" aria-hidden="true">
           <span /><span /><span /><span />
         </div>
