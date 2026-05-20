@@ -256,6 +256,55 @@ body::before {
 }
 .hero-sep { color: var(--ink-3); }
 .hero-bio { max-width: 56ch; color: var(--ink-1); font-size: 13.5px; line-height: 1.55; position: relative; z-index: 1; }
+/* ─── Hero Actions ─── */
+.hero-actions {
+  display: flex; align-items: center; gap: 20px;
+  position: relative; z-index: 1;
+}
+.hire-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--ff-mono); font-size: 12px; letter-spacing: 0.18em;
+  color: var(--ac, var(--accent));
+  border: 1px solid var(--ac, var(--accent));
+  padding: 9px 18px;
+  text-decoration: none;
+  position: relative; overflow: hidden;
+  transition: color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 0 12px -4px var(--ac, var(--accent));
+}
+.hire-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, var(--ac, var(--accent)) 50%, transparent 100%);
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.15s;
+}
+.hire-btn:hover {
+  color: var(--bg);
+  background: var(--ac, var(--accent));
+  box-shadow: 0 0 24px -2px var(--ac, var(--accent)), 0 0 48px -8px var(--ac, var(--accent));
+}
+.hire-btn:hover .hire-btn-dot { background: var(--bg) !important; box-shadow: none !important; }
+.hire-btn-bracket { color: var(--ink-3); font-size: 14px; transition: color 0.2s; }
+.hire-btn:hover .hire-btn-bracket { color: var(--bg); }
+.hire-btn-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.hire-btn-label { font-weight: 600; }
+.hire-btn-arrow { font-size: 14px; transition: transform 0.2s; }
+.hire-btn:hover .hire-btn-arrow { transform: translate(2px, -2px); }
+
+.resume-link {
+  font-family: var(--ff-mono); font-size: 10.5px; letter-spacing: 0.14em;
+  color: var(--ink-2); text-decoration: none;
+  transition: color 0.2s;
+  border-bottom: 1px solid transparent;
+}
+.resume-link:hover { color: var(--ink); border-bottom-color: var(--ink-2); }
+
 .hero-strip {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
   background: var(--line); border-top: 1px solid var(--line);

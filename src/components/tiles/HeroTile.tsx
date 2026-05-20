@@ -39,6 +39,18 @@ export default function HeroTile({ accent }: Props) {
         <span>FGCU</span>
       </div>
       <div className="hero-bio">{profile.bio}</div>
+      <div className="hero-actions" style={{ '--ac': accent } as React.CSSProperties}>
+        <a href={`mailto:${profile.links.email}?subject=Job%20Opportunity%20%E2%80%94%20SWE%20Internship&body=Hi%20Wilson%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20love%20to%20connect%20about%20a%20potential%20opportunity.%0A%0A`} className="hire-btn">
+          <span className="hire-btn-bracket">[</span>
+          <span className="hire-btn-dot" style={{ background: accent, boxShadow: `0 0 8px ${accent}` }} />
+          <span className="hire-btn-label">HIRE ME</span>
+          <span className="hire-btn-arrow">↗</span>
+          <span className="hire-btn-bracket">]</span>
+        </a>
+        <a href={profile.links.resume} target="_blank" rel="noopener noreferrer" className="resume-link">
+          VIEW RESUME →
+        </a>
+      </div>
       <div className="hero-strip">
         {profile.strip.map(cell => (
           <div key={cell.label} className="hcell">
