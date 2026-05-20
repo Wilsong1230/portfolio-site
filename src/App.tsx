@@ -88,6 +88,8 @@ export default function App() {
   const [hoverId, setHoverId] = useState<string | null>(null)
   const tileRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
+  useEffect(() => { window.scrollTo(0, 0) }, [])
+
   // Persist tile order
   useEffect(() => { try { localStorage.setItem('tileOrder', JSON.stringify(order)) } catch {} }, [order])
 
