@@ -1,6 +1,6 @@
 export const TERM_BIO = `Wilson Gomez — Software Engineering Student, Lab Assistant, DOT Intern.
-Embedded systems + Python tools + low-level systems work. Currently building
-Arduino rovers, extracting survey control points from PDFs, and counting cars.`
+Embedded systems + Swift apps + Python tools. Currently building a custom
+flight computer, an iOS/Apple Watch fitness app, and survey tooling for the DOT.`
 
 export interface TermProject {
   id: string
@@ -12,11 +12,18 @@ export interface TermProject {
 
 export const TERM_PROJECTS: TermProject[] = [
   {
-    id: 'maze',
-    name: 'Autonomous Maze Rover',
-    tag: 'Embedded / Robotics',
-    desc: 'Arduino rover navigating mazes via HC-SR04 ultrasonic sensing and a wall-following state machine. 28BYJ-48 stepper motors, ULN2003 drivers, non-blocking loop.',
-    stack: ['Arduino', 'C++', 'AccelStepper', 'Ultrasonic'],
+    id: 'flight',
+    name: 'Flight Computer',
+    tag: 'Embedded / Avionics',
+    desc: 'Custom flight computer built from the electronics up — fuses IMU + barometer for flight state, logs telemetry to onboard flash, and fires recovery channels. Hand-rolled schematic, PCB, and firmware.',
+    stack: ['C/C++', 'Microcontroller', 'IMU', 'Barometer', 'PCB Design'],
+  },
+  {
+    id: 'fitness',
+    name: 'Fitness App',
+    tag: 'Swift / iOS + watchOS',
+    desc: 'iOS and Apple Watch app that unifies workout + health data from Hevy, Strava, and Apple Fitness, then analyzes trends across strength, cardio, and recovery.',
+    stack: ['Swift', 'SwiftUI', 'HealthKit', 'watchOS'],
   },
   {
     id: 'cpe',
@@ -24,13 +31,6 @@ export const TERM_PROJECTS: TermProject[] = [
     tag: 'Python / Desktop',
     desc: 'Drop in a folder of engineering PDF plan sets — it finds, parses, deduplicates, and exports all survey control points to CSV.',
     stack: ['Python', 'PDF Parsing', 'Desktop'],
-  },
-  {
-    id: 'counter',
-    name: 'Car Counter',
-    tag: 'Python / CV',
-    desc: 'Camera-based vehicle counter with real-time detection and detailed car info tracking.',
-    stack: ['Python', 'OpenCV', 'Web'],
   },
 ]
 
@@ -40,8 +40,8 @@ export interface TermSkillGroup {
 }
 
 export const TERM_SKILLS: TermSkillGroup[] = [
-  { group: 'Languages', items: ['C', 'C++', 'Python', 'JavaScript'] },
-  { group: 'Embedded',  items: ['Arduino/AVR', 'AVR Assembly', 'Digital/Analog Electronics'] },
+  { group: 'Languages', items: ['C', 'C++', 'Python', 'Swift', 'JavaScript'] },
+  { group: 'Embedded',  items: ['Arduino/AVR', 'AVR Assembly', 'Digital/Analog Electronics', 'PCB Design'] },
   { group: 'Concepts',  items: ['DSA', 'Software Engineering', 'Computer Organization'] },
   { group: 'Tools',     items: ['Git', 'Linux', 'Arduino IDE'] },
 ]
@@ -68,16 +68,17 @@ export function toMorse(s: string): string {
 
 export const FILE_TREE = `~/wilson
 ├── projects/
-│   ├── autonomous-maze-rover/   # embedded · Arduino
-│   ├── control-point-finder/    # Python · PDF
-│   └── car-counter/             # Python · CV
+│   ├── flight-computer/         # embedded · avionics
+│   ├── fitness-app/             # Swift · iOS + watchOS
+│   └── control-point-finder/    # Python · PDF
 ├── skills/
 │   ├── c
 │   ├── cpp
 │   ├── python
+│   ├── swift
 │   └── embedded/  (arduino, avr-assembly)
 ├── now/
-│   └── maze-rover-v2.md
+│   └── flight-computer.md
 └── contact.vcf`
 
 export const EASTER_EGGS: Record<string, string> = {
@@ -106,8 +107,8 @@ export const BOOT_LINES = [
   { t: '0.298', v: 'degree: B.S. Software Engineering · FGCU · 2027',             cls: '' },
   { t: '0.354', v: 'experience: Lab Assistant · Lee County DOT Intern',           cls: '' },
   { t: '0.412', v: 'starfield: ok · pcb traces: ok · scanlines: ok',             cls: 'bv-ok' },
-  { t: '0.478', v: 'projects: 3 loaded  [maze-rover] [ctrl-point] [car-counter]', cls: '' },
-  { t: '0.534', v: 'skills: C · C++ · Python · Arduino/AVR · JavaScript',        cls: '' },
+  { t: '0.478', v: 'projects: 3 loaded  [flight-computer] [fitness-app] [ctrl-point]', cls: '' },
+  { t: '0.534', v: 'skills: C · C++ · Python · Swift · Arduino/AVR',             cls: '' },
   { t: '0.601', v: 'terminal: handshake complete · type "help" to begin',         cls: 'bv-ok' },
   { t: '0.668', v: 'atmosphere: parallax ok · vignette ok · spotlight ok',       cls: '' },
   { t: '0.724', v: "awards: Bright Futures · President's Gold · AICE Diploma",   cls: '' },

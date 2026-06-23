@@ -19,7 +19,7 @@ function termHelp(): TermRowData[] {
     { kind:'kv', k:'help',         v:'show this list' },
     { kind:'kv', k:'whoami',       v:'about Wilson' },
     { kind:'kv', k:'projects',     v:'list featured projects' },
-    { kind:'kv', k:'open <id>',    v:'open project (maze | cpe | counter)' },
+    { kind:'kv', k:'open <id>',    v:'open project (flight | fitness | cpe)' },
     { kind:'kv', k:'skills',       v:'list skills by group' },
     { kind:'kv', k:'contact',      v:'how to reach me' },
     { kind:'kv', k:'resume',       v:'download resume.pdf' },
@@ -41,13 +41,13 @@ function termProjects(): TermRowData[] {
   TERM_PROJECTS.forEach((p, i) => {
     lines.push({ kind:'proj', i:i+1, id:p.id, name:p.name, tag:p.tag, desc:p.desc })
   })
-  lines.push({ kind:'line', text:'› try: open maze   open cpe   open counter', cls:'tm' })
+  lines.push({ kind:'line', text:'› try: open flight   open fitness   open cpe', cls:'tm' })
   return lines
 }
 
 function termOpen(id: string): TermRowData[] {
   const p = TERM_PROJECTS.find(x => x.id === id)
-  if (!p) return [{ kind:'line', text:`no project '${id}'. try: maze | cpe | counter`, cls:'te' }]
+  if (!p) return [{ kind:'line', text:`no project '${id}'. try: flight | fitness | cpe`, cls:'te' }]
   return [
     { kind:'line', text:`OPEN › ${p.name.toUpperCase()}`, cls:'th' },
     { kind:'line', text:p.tag, cls:'tm' },

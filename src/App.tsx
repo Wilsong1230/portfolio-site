@@ -164,7 +164,7 @@ export default function App() {
       { delay:3400, fn: () => scrollTile('heatmap') },
       { delay:5000, fn: () => scrollTile('skills') },
       { delay:6600, fn: () => scrollTile('prj-1') },
-      { delay:8200, fn: () => setOpenProject('maze') },
+      { delay:8200, fn: () => setOpenProject('flight') },
       { delay:12500,fn: () => setOpenProject(null) },
       { delay:13800,fn: () => scrollTile('experience') },
       { delay:15600,fn: () => scrollTile('contact') },
@@ -177,7 +177,7 @@ export default function App() {
       const tgt = action.slice(5)
       const map: Record<string,string> = { hero:'hero', current:'current', terminal:'term', term:'term',
         projects:'prj-1', skills:'skills', contact:'contact', status:'status',
-        maze:'prj-1', cpe:'prj-2', counter:'prj-3' }
+        flight:'prj-1', fitness:'prj-2', cpe:'prj-3' }
       scrollTile(map[tgt] ?? tgt)
     } else if (action.startsWith('theme:')) {
       const name = action.slice(6)

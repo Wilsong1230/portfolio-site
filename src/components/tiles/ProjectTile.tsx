@@ -8,27 +8,62 @@ interface Props {
   onOpen: (id: string) => void
 }
 
-function RoverPreview({ accent, secondary }: { accent: string; secondary: string }) {
+function FlightPreview({ accent, secondary }: { accent: string; secondary: string }) {
   return (
     <svg viewBox="0 0 320 160" className="prv">
       <rect width="320" height="160" fill="rgba(255,255,255,0.02)" />
-      {Array.from({ length: 10 }).map((_, i) => (
-        <line key={'v'+i} x1={i*32} y1="0" x2={i*32} y2="160" stroke="rgba(255,255,255,0.05)" />
+      {/* PCB board outline */}
+      <rect x="22" y="40" width="180" height="104" rx="6" fill="rgba(91,141,239,0.05)" stroke={accent} strokeWidth="1" opacity="0.5" />
+      {/* mounting holes */}
+      {[[34,52],[190,52],[34,132],[190,132]].map(([cx,cy],i)=>(
+        <circle key={i} cx={cx} cy={cy} r="3" fill="none" stroke={accent} strokeWidth="1" opacity="0.6" />
       ))}
-      {Array.from({ length: 5 }).map((_, i) => (
-        <line key={'h'+i} x1="0" y1={i*32+16} x2="320" y2={i*32+16} stroke="rgba(255,255,255,0.05)" />
+      {/* MCU + sensor chips */}
+      <rect x="90" y="78" width="34" height="28" rx="2" fill="rgba(7,9,18,0.9)" stroke={accent} strokeWidth="1" />
+      <rect x="48" y="62" width="22" height="16" rx="2" fill="none" stroke={secondary} strokeWidth="1" opacity="0.8" />
+      <rect x="146" y="62" width="22" height="16" rx="2" fill="none" stroke={secondary} strokeWidth="1" opacity="0.8" />
+      <rect x="48" y="112" width="22" height="16" rx="2" fill="none" stroke={secondary} strokeWidth="1" opacity="0.8" />
+      {/* traces */}
+      {[[70,70,90,86],[157,70,124,86],[59,112,107,106],[124,92,160,120]].map(([x1,y1,x2,y2],i)=>(
+        <path key={i} d={`M${x1} ${y1} L${(x1+x2)/2} ${y1} L${(x1+x2)/2} ${y2} L${x2} ${y2}`} fill="none" stroke={accent} strokeWidth="0.8" opacity="0.5" />
       ))}
-      <rect x="20" y="20" width="280" height="120" fill="none" stroke={accent} strokeWidth="1" opacity="0.3" />
-      <line x1="80" y1="20" x2="80" y2="100" stroke={accent} strokeWidth="1" opacity="0.3" />
-      <line x1="160" y1="60" x2="160" y2="140" stroke={accent} strokeWidth="1" opacity="0.3" />
-      <line x1="240" y1="20" x2="240" y2="100" stroke={accent} strokeWidth="1" opacity="0.3" />
-      <line x1="80" y1="100" x2="240" y2="100" stroke={accent} strokeWidth="1" opacity="0.3" />
-      <rect x="42" y="70" width="20" height="14" rx="2" fill={accent} opacity="0.9" />
-      <circle cx="46" cy="88" r="4" fill={secondary} opacity="0.8" />
-      <circle cx="58" cy="88" r="4" fill={secondary} opacity="0.8" />
-      <path d="M52,70 A22,22 0 0,1 74,70" fill="none" stroke={secondary} strokeWidth="1" strokeDasharray="3 2" opacity="0.7" />
-      <text x="12" y="20" fontSize="9" fontFamily="JetBrains Mono" fill={accent}>MAZE-ROVER · MOVING</text>
-      <text x="12" y="34" fontSize="7" fontFamily="JetBrains Mono" fill="rgba(255,255,255,0.5)">HC-SR04 · wall-follow fsm</text>
+      {/* altitude / flight curve */}
+      <path d="M214 138 Q 250 40 270 60 Q 285 74 306 132" fill="none" stroke={accent} strokeWidth="1.4" opacity="0.85" />
+      <circle cx="262" cy="52" r="3" fill={accent} />
+      <text x="232" y="46" fontSize="6" fontFamily="JetBrains Mono" fill="rgba(255,255,255,0.55)">apogee</text>
+      <text x="12" y="20" fontSize="9" fontFamily="JetBrains Mono" fill={accent}>FLIGHT-COMPUTER · ARMED</text>
+      <text x="12" y="34" fontSize="7" fontFamily="JetBrains Mono" fill="rgba(255,255,255,0.5)">IMU + baro · telemetry log</text>
+    </svg>
+  )
+}
+
+function FitnessPreview({ accent, secondary }: { accent: string; secondary: string }) {
+  return (
+    <svg viewBox="0 0 320 160" className="prv">
+      <rect width="320" height="160" fill="rgba(255,255,255,0.02)" />
+      {/* phone */}
+      <rect x="34" y="34" width="88" height="116" rx="12" fill="rgba(7,9,18,0.9)" stroke={accent} strokeWidth="1" />
+      <rect x="42" y="46" width="72" height="6" rx="3" fill={accent} opacity="0.5" />
+      {/* bar chart on phone */}
+      {[[50,120,26],[64,108,38],[78,116,30],[92,96,50],[106,104,42]].map(([x,y,h],i)=>(
+        <rect key={i} x={x} y={y} width="8" height={h} rx="2" fill={i===3?accent:secondary} opacity={i===3?0.95:0.55} />
+      ))}
+      {/* watch */}
+      <rect x="150" y="58" width="64" height="64" rx="16" fill="rgba(7,9,18,0.9)" stroke={accent} strokeWidth="1" />
+      {/* activity rings */}
+      <circle cx="182" cy="90" r="22" fill="none" stroke={accent} strokeWidth="4" opacity="0.18" />
+      <circle cx="182" cy="90" r="22" fill="none" stroke={accent} strokeWidth="4" strokeLinecap="round" strokeDasharray="104 138" transform="rotate(-90 182 90)" />
+      <circle cx="182" cy="90" r="15" fill="none" stroke={secondary} strokeWidth="4" opacity="0.18" />
+      <circle cx="182" cy="90" r="15" fill="none" stroke={secondary} strokeWidth="4" strokeLinecap="round" strokeDasharray="70 94" transform="rotate(-90 182 90)" />
+      {/* data sources */}
+      {['HEVY','STRAVA','APPLE'].map((s,i)=>(
+        <g key={s}>
+          <rect x="238" y={50+i*30} width="70" height="20" rx="5" fill="none" stroke={secondary} strokeWidth="1" opacity="0.6" />
+          <text x="246" y={64+i*30} fontSize="8" fontFamily="JetBrains Mono" fill="rgba(255,255,255,0.6)">{s}</text>
+        </g>
+      ))}
+      <text x="12" y="20" fontSize="9" fontFamily="JetBrains Mono" fill={accent}>FITNESS · SYNCED</text>
+      <text x="12" y="32" fontSize="7" fontFamily="JetBrains Mono" fill="rgba(255,255,255,0.5)">iOS + watchOS · HealthKit</text>
     </svg>
   )
 }
@@ -57,31 +92,6 @@ function CPEPreview({ accent, secondary: _s2 }: { accent: string; secondary: str
   )
 }
 
-function CounterPreview({ accent, secondary }: { accent: string; secondary: string }) {
-  return (
-    <svg viewBox="0 0 320 160" className="prv">
-      <defs>
-        <pattern id="cvgrid" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-        </pattern>
-      </defs>
-      <rect width="320" height="160" fill="rgba(255,255,255,0.02)" />
-      <rect width="320" height="160" fill="url(#cvgrid)" />
-      <polygon points="40,160 130,40 200,40 280,160" fill="rgba(255,255,255,0.04)" />
-      <line x1="165" y1="40" x2="160" y2="160" stroke={secondary} strokeWidth="1" strokeDasharray="4 6" opacity="0.6" />
-      {[[60,120,40,22],[110,90,28,16],[180,70,24,14],[200,110,36,20],[240,135,44,24]].map(([x,y,w,h], i) => (
-        <g key={i}>
-          <rect x={x} y={y} width={w} height={h} fill="none" stroke={accent} strokeWidth="1" />
-          <rect x={x} y={y-10} width={28} height={9} fill={accent} />
-          <text x={x+2} y={y-3} fontSize="6" fontFamily="JetBrains Mono" fill="#0a0a0a">car {String(i+1).padStart(2,'0')}</text>
-        </g>
-      ))}
-      <text x="12" y="20" fontSize="9" fontFamily="JetBrains Mono" fill={accent}>COUNT 247 ▲</text>
-      <text x="12" y="34" fontSize="7" fontFamily="JetBrains Mono" fill="rgba(255,255,255,0.5)">OpenCV · virtual line detection</text>
-    </svg>
-  )
-}
-
 export default function ProjectTile({ project, accent, secondary, onOpen }: Props) {
   return (
     <div className="prj">
@@ -90,9 +100,9 @@ export default function ProjectTile({ project, accent, secondary, onOpen }: Prop
         <span className="prj-id" style={{ color: accent }}>#{project.code}</span>
       </div>
       <div className="prj-preview">
-        {project.preview === 'rover'   && <RoverPreview   accent={accent} secondary={secondary} />}
+        {project.preview === 'flight'  && <FlightPreview  accent={accent} secondary={secondary} />}
+        {project.preview === 'fitness' && <FitnessPreview accent={accent} secondary={secondary} />}
         {project.preview === 'cpe'     && <CPEPreview     accent={accent} secondary={secondary} />}
-        {project.preview === 'counter' && <CounterPreview accent={accent} secondary={secondary} />}
       </div>
       <div className="prj-body">
         <div className="prj-title">{project.name}</div>

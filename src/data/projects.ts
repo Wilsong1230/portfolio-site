@@ -1,3 +1,8 @@
+export interface Shot {
+  src: string
+  caption?: string
+}
+
 export interface Project {
   id: string
   code: string
@@ -5,42 +10,73 @@ export interface Project {
   name: string
   desc: string
   stack: string[]
-  repoUrl: string
-  preview: 'rover' | 'cpe' | 'counter'
+  repoUrl?: string
+  repoPrivate?: boolean
+  preview: 'flight' | 'fitness' | 'cpe'
   status: string
   blurb: string
   bullets: string[]
   metrics: { l: string; v: string }[]
+  // Screenshots shown in the project modal. Drop image files into
+  // public/shots/ and add their paths here (e.g. '/shots/fitness-1.png').
+  // Click any shot in the modal to blow it up + share.
+  shots?: Shot[]
 }
 
 export const projects: Project[] = [
   {
-    id: 'maze',
+    id: 'flight',
     code: '01',
-    kind: 'EMBEDDED · ROBOTICS',
-    name: 'Autonomous Maze Rover',
-    desc: 'Arduino rover that navigates mazes autonomously via servo-mounted HC-SR04 ultrasonic sensing and a wall-following state machine.',
-    stack: ['Arduino', 'C++', 'AccelStepper', 'Ultrasonic'],
-    repoUrl: 'https://github.com/Wilsong1230/sillyMazeBot',
-    preview: 'rover',
-    status: 'COMPLETE · OPEN SOURCE',
-    blurb: 'Arduino-based rover that autonomously navigates mazes using a servo-mounted HC-SR04 ultrasonic sensor and a finite-state wall-following machine. The non-blocking control loop keeps sensor sweeps and motor commands in sync without delay().',
+    kind: 'EMBEDDED · AVIONICS',
+    name: 'Flight Computer',
+    desc: 'Custom avionics board built from the electronics up — sensor-fused IMU + barometer for flight state, onboard telemetry logging, and recovery deployment.',
+    stack: ['C/C++', 'Microcontroller', 'IMU', 'Barometer', 'PCB Design'],
+    repoPrivate: true,
+    preview: 'flight',
+    status: 'IN PROGRESS · HARDWARE',
+    blurb: 'A custom flight computer for model rocketry, built from the electronics up. The board fuses IMU (accel + gyro) and barometric altitude to estimate flight state, logs full telemetry to onboard flash, and fires recovery channels for parachute deployment. Schematic, PCB layout, and firmware are all hand-rolled.',
     bullets: [
-      'State machine: MOVING → CHECK_TURN → TURN_LEFT/TURN_RIGHT → STUCK/FINISH',
-      '28BYJ-48 stepper motors driven via ULN2003 — precise, quiet motion',
-      'Servo sweeps HC-SR04 to map clearances before committing to a turn',
-      'Non-blocking loop using millis() — sensor and motor tasks never stall each other',
+      'Sensor fusion of IMU (accel + gyro) and barometric altimeter for state estimation',
+      'High-rate onboard logging of acceleration, altitude, and orientation to flash',
+      'Pyro channels with continuity checks for drogue + main parachute deployment',
+      'Custom PCB — schematic capture, layout, and bench bring-up / testing',
     ],
     metrics: [
-      { l: 'PLATFORM', v: 'Arduino Uno' },
-      { l: 'SENSOR', v: 'HC-SR04' },
-      { l: 'MOTORS', v: '28BYJ-48' },
-      { l: 'DRIVER', v: 'ULN2003' },
+      { l: 'MCU', v: 'Cortex-M' },
+      { l: 'SENSORS', v: 'IMU + Baro' },
+      { l: 'LOGGING', v: 'Onboard flash' },
+      { l: 'STAGE', v: 'Bring-up' },
     ],
+    shots: [],
+  },
+  {
+    id: 'fitness',
+    code: '02',
+    kind: 'SWIFT · iOS + WATCHOS',
+    name: 'Fitness App',
+    desc: 'iOS + Apple Watch app that pulls workout and health data from Hevy, Strava, and Apple Fitness into one place, then analyzes trends across strength, cardio, and recovery.',
+    stack: ['Swift', 'SwiftUI', 'HealthKit', 'watchOS', 'REST APIs'],
+    repoPrivate: true,
+    preview: 'fitness',
+    status: 'IN DEVELOPMENT · PRIVATE',
+    blurb: 'A personal fitness companion for iPhone and Apple Watch that unifies workout and health data from Hevy, Strava, and Apple Fitness into a single timeline — then surfaces trends across strength, cardio, and recovery. Built in Swift with a native watchOS companion.',
+    bullets: [
+      'Aggregates data from Hevy, Strava, and Apple Fitness / HealthKit into one view',
+      'Native Apple Watch companion for at-a-glance stats and workout tracking',
+      'Trend analysis across strength, cardio, and recovery metrics',
+      'SwiftUI interface with charts and per-workout breakdowns',
+    ],
+    metrics: [
+      { l: 'PLATFORM', v: 'iOS + watchOS' },
+      { l: 'LANGUAGE', v: 'Swift' },
+      { l: 'SOURCES', v: 'Hevy · Strava' },
+      { l: 'HEALTH', v: 'HealthKit' },
+    ],
+    shots: [],
   },
   {
     id: 'cpe',
-    code: '02',
+    code: '03',
     kind: 'PYTHON · DESKTOP',
     name: 'Control Point Finder',
     desc: 'Python desktop app — drop in a folder of engineering PDF plan sets, it finds, parses, deduplicates, and exports all survey control points to CSV.',
@@ -60,30 +96,6 @@ export const projects: Project[] = [
       { l: 'OUTPUT', v: 'CSV / coords' },
       { l: 'DEDUP', v: 'tolerance match' },
       { l: 'RUNTIME', v: 'Python 3.11' },
-    ],
-  },
-  {
-    id: 'counter',
-    code: '03',
-    kind: 'PYTHON · CV',
-    name: 'Car Counter',
-    desc: 'Camera-based vehicle counter with real-time detection. Personalized with detailed car info tracking.',
-    stack: ['Python', 'OpenCV', 'Web'],
-    repoUrl: 'https://github.com/Wilsong1230/Car_counting_cam',
-    preview: 'counter',
-    status: 'DEPLOYED · LIVE CAM',
-    blurb: 'Real-time camera-based vehicle counter using OpenCV. Tracks vehicles crossing a virtual line, logs detailed per-car info, and displays a running count overlay. Designed for traffic monitoring and data collection.',
-    bullets: [
-      'Virtual line crossing detection with directional counting',
-      'Per-vehicle metadata tracking — timestamps, lane, duration',
-      'Live count overlay rendered on the video feed',
-      'Configurable camera source — USB, IP cam, or video file',
-    ],
-    metrics: [
-      { l: 'STACK', v: 'Python · OpenCV' },
-      { l: 'INPUT', v: 'Camera / file' },
-      { l: 'OUTPUT', v: 'Count + log' },
-      { l: 'DISPLAY', v: 'Live overlay' },
     ],
   },
 ]

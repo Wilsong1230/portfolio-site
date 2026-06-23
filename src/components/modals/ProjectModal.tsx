@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { projects } from '../../data/projects'
 
 interface Props {
@@ -34,21 +34,40 @@ function SchemNode({ x, y, w, h, label, sub, accent, fill }: { x:number;y:number
   )
 }
 
-function RoverSchem({ accent, secondary }: { accent:string; secondary:string }) {
-  const N = { imu:{x:60,y:60}, bat:{x:60,y:180}, mcu:{x:200,y:120}, motL:{x:340,y:60}, motR:{x:340,y:180}, rad:{x:200,y:220} }
+function FlightSchem({ accent, secondary }: { accent:string; secondary:string }) {
+  const N = { imu:{x:60,y:50}, baro:{x:60,y:130}, pwr:{x:60,y:210}, mcu:{x:200,y:120}, flash:{x:340,y:50}, pyro:{x:340,y:190} }
   return (
     <svg viewBox="0 0 400 260" className="schem">
-      <FlowEdge from={N.imu} to={N.mcu} accent={accent} delay={0} />
-      <FlowEdge from={N.bat} to={N.mcu} accent={secondary} delay={0.4} />
-      <FlowEdge from={N.mcu} to={N.motL} accent={accent} delay={0.2} />
-      <FlowEdge from={N.mcu} to={N.motR} accent={accent} delay={0.6} />
-      <FlowEdge from={N.rad} to={N.mcu} accent={secondary} delay={0.8} />
-      <SchemNode {...N.imu}  w={90} h={32} label="HC-SR04"    sub="servo · sweep" accent={accent} />
-      <SchemNode {...N.bat}  w={90} h={32} label="9V POWER"   sub="VIN · GND"     accent={secondary} />
-      <SchemNode {...N.mcu}  w={120} h={52} label="Arduino Uno" sub="C++ · millis()" accent={accent} fill="rgba(91,141,239,0.07)" />
-      <SchemNode {...N.motL} w={90} h={32} label="STEPPER L"  sub="28BYJ-48"      accent={accent} />
-      <SchemNode {...N.motR} w={90} h={32} label="STEPPER R"  sub="28BYJ-48"      accent={accent} />
-      <SchemNode {...N.rad}  w={90} h={32} label="ULN2003"    sub="driver"        accent={secondary} />
+      <FlowEdge from={N.imu}  to={N.mcu} accent={accent} delay={0} />
+      <FlowEdge from={N.baro} to={N.mcu} accent={accent} delay={0.3} />
+      <FlowEdge from={N.pwr}  to={N.mcu} accent={secondary} delay={0.5} />
+      <FlowEdge from={N.mcu}  to={N.flash} accent={accent} delay={0.6} />
+      <FlowEdge from={N.mcu}  to={N.pyro}  accent={secondary} delay={0.9} />
+      <SchemNode {...N.imu}   w={90} h={32}  label="IMU"        sub="accel · gyro"   accent={accent} />
+      <SchemNode {...N.baro}  w={90} h={32}  label="BAROMETER"  sub="altitude"       accent={accent} />
+      <SchemNode {...N.pwr}   w={90} h={32}  label="POWER"      sub="LiPo · reg"     accent={secondary} />
+      <SchemNode {...N.mcu}   w={120} h={52} label="MCU"        sub="Cortex-M · fusion" accent={accent} fill="rgba(91,141,239,0.07)" />
+      <SchemNode {...N.flash} w={90} h={32}  label="FLASH LOG"  sub="telemetry"      accent={accent} />
+      <SchemNode {...N.pyro}  w={90} h={32}  label="PYRO CH"    sub="drogue · main"  accent={secondary} />
+    </svg>
+  )
+}
+
+function FitnessSchem({ accent, secondary }: { accent:string; secondary:string }) {
+  const N = { hevy:{x:60,y:45}, strava:{x:60,y:125}, apple:{x:60,y:205}, app:{x:210,y:125}, watch:{x:345,y:55}, analyze:{x:345,y:190} }
+  return (
+    <svg viewBox="0 0 400 260" className="schem">
+      <FlowEdge from={N.hevy}   to={N.app} accent={secondary} delay={0} />
+      <FlowEdge from={N.strava} to={N.app} accent={secondary} delay={0.3} />
+      <FlowEdge from={N.apple}  to={N.app} accent={secondary} delay={0.5} />
+      <FlowEdge from={N.app}    to={N.watch}   accent={accent} delay={0.6} />
+      <FlowEdge from={N.app}    to={N.analyze} accent={accent} delay={0.9} />
+      <SchemNode {...N.hevy}    w={90} h={32}  label="HEVY"     sub="strength"   accent={secondary} />
+      <SchemNode {...N.strava}  w={90} h={32}  label="STRAVA"   sub="cardio"     accent={secondary} />
+      <SchemNode {...N.apple}   w={90} h={32}  label="APPLE FIT" sub="HealthKit" accent={secondary} />
+      <SchemNode {...N.app}     w={120} h={52} label="iOS APP"  sub="SwiftUI · sync" accent={accent} fill="rgba(91,141,239,0.07)" />
+      <SchemNode {...N.watch}   w={90} h={32}  label="watchOS"  sub="companion"  accent={accent} />
+      <SchemNode {...N.analyze} w={90} h={32}  label="ANALYZE"  sub="trends"     accent={accent} />
     </svg>
   )
 }
@@ -71,36 +90,49 @@ function CPESchem({ accent, secondary }: { accent:string; secondary:string }) {
   )
 }
 
-function CounterSchem({ accent, secondary }: { accent:string; secondary:string }) {
-  const N = { cam:{x:60,y:130}, decode:{x:170,y:130}, detect:{x:280,y:130}, count:{x:280,y:50}, log:{x:380,y:130} }
-  return (
-    <svg viewBox="0 0 440 200" className="schem">
-      <FlowEdge from={N.cam}    to={N.decode} accent={secondary} delay={0} />
-      <FlowEdge from={N.decode} to={N.detect} accent={accent} delay={0.3} />
-      <FlowEdge from={N.detect} to={N.count}  accent={accent} delay={0.5} />
-      <FlowEdge from={N.detect} to={N.log}    accent={accent} delay={0.7} />
-      <FlowEdge from={N.count}  to={N.log}    accent={secondary} delay={0.9} />
-      <SchemNode {...N.cam}    w={90} h={32}  label="CAMERA"   sub="USB / IP"     accent={secondary} />
-      <SchemNode {...N.decode} w={90} h={32}  label="CAPTURE"  sub="cv2.read()"   accent={accent} />
-      <SchemNode {...N.detect} w={100} h={52} label="DETECT"   sub="OpenCV · line" accent={accent} fill="rgba(91,141,239,0.07)" />
-      <SchemNode {...N.count}  w={90} h={32}  label="COUNTER"  sub="virtual gate" accent={accent} />
-      <SchemNode {...N.log}    w={90} h={32}  label="LOG"      sub="CSV · overlay" accent={secondary} />
-    </svg>
-  )
-}
-
 export default function ProjectModal({ projectId, onClose, accent, secondary }: Props) {
   const project = projects.find(p => p.id === projectId)
+  const shots = project?.shots ?? []
+  const [lightbox, setLightbox] = useState<number | null>(null)
+  const [copied, setCopied] = useState(false)
+
+  // Reset the lightbox when switching projects (adjust state during render —
+  // see https://react.dev/learn/you-might-not-need-an-effect)
+  const [prevId, setPrevId] = useState(projectId)
+  if (projectId !== prevId) {
+    setPrevId(projectId)
+    setLightbox(null)
+  }
 
   useEffect(() => {
     if (!projectId) return
-    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') { if (lightbox !== null) setLightbox(null); else onClose() }
+      if (lightbox !== null && shots.length > 1) {
+        if (e.key === 'ArrowRight') setLightbox(i => i === null ? i : (i + 1) % shots.length)
+        if (e.key === 'ArrowLeft')  setLightbox(i => i === null ? i : (i - 1 + shots.length) % shots.length)
+      }
+    }
     window.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
-  }, [projectId, onClose])
+  }, [projectId, onClose, lightbox, shots.length])
 
   if (!project) return null
+
+  const active = lightbox !== null ? shots[lightbox] : null
+
+  async function shareShot(src: string) {
+    const url = new URL(src, window.location.origin).href
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1600)
+    } catch {
+      window.open(url, '_blank')
+    }
+  }
+
   return (
     <div className="pm-back" onClick={onClose}>
       <div className="pm" onClick={e => e.stopPropagation()}>
@@ -110,6 +142,12 @@ export default function ProjectModal({ projectId, onClose, accent, secondary }: 
             <span className="pm-kind">{project.kind}</span>
           </div>
           <div className="pm-bar-r">
+            {project.repoUrl && (
+              <a className="pm-repo" href={project.repoUrl} target="_blank" rel="noreferrer" style={{ color: accent }}>
+                GITHUB ↗
+              </a>
+            )}
+            {project.repoPrivate && <span className="pm-repo pm-repo-priv">PRIVATE REPO</span>}
             <span className="pm-stat">
               <span className="dot wip" style={{ background: accent }} />
               {project.status}
@@ -136,9 +174,9 @@ export default function ProjectModal({ projectId, onClose, accent, secondary }: 
           <div className="pm-col pm-col-r">
             <div className="pm-schem">
               <div className="pm-schem-l">SYSTEM DIAGRAM · {project.code}</div>
-              {project.preview === 'rover'   && <RoverSchem   accent={accent} secondary={secondary} />}
+              {project.preview === 'flight'  && <FlightSchem  accent={accent} secondary={secondary} />}
+              {project.preview === 'fitness' && <FitnessSchem accent={accent} secondary={secondary} />}
               {project.preview === 'cpe'     && <CPESchem     accent={accent} secondary={secondary} />}
-              {project.preview === 'counter' && <CounterSchem accent={accent} secondary={secondary} />}
             </div>
             <div className="pm-metrics">
               {project.metrics.map(m => (
@@ -148,9 +186,51 @@ export default function ProjectModal({ projectId, onClose, accent, secondary }: 
                 </div>
               ))}
             </div>
+
+            <div className="pm-shots-l">SCREENSHOTS</div>
+            {shots.length > 0 ? (
+              <div className="pm-shots">
+                {shots.map((s, i) => (
+                  <button key={s.src} className="pm-shot" onClick={() => setLightbox(i)} style={{ borderColor: accent + '40' }}>
+                    <img src={s.src} alt={s.caption ?? `${project.name} screenshot ${i + 1}`} loading="lazy" />
+                    <span className="pm-shot-zoom" style={{ color: accent }}>⤢</span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="pm-shots-empty">
+                <span className="pm-shots-empty-i">⤢</span>
+                Screenshots coming soon — click any shot to blow it up &amp; share.
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {active && (
+        <div className="lb-back" onClick={() => setLightbox(null)}>
+          <div className="lb" onClick={e => e.stopPropagation()}>
+            <img className="lb-img" src={active.src} alt={active.caption ?? project.name} />
+            <div className="lb-bar">
+              <span className="lb-cap">{active.caption ?? project.name}</span>
+              <div className="lb-actions">
+                {shots.length > 1 && (
+                  <>
+                    <span className="lb-count">{(lightbox ?? 0) + 1} / {shots.length}</span>
+                    <button className="lb-btn" onClick={() => setLightbox(i => i === null ? i : (i - 1 + shots.length) % shots.length)}>‹</button>
+                    <button className="lb-btn" onClick={() => setLightbox(i => i === null ? i : (i + 1) % shots.length)}>›</button>
+                  </>
+                )}
+                <a className="lb-btn" href={active.src} target="_blank" rel="noreferrer">OPEN ↗</a>
+                <button className="lb-btn" onClick={() => shareShot(active.src)} style={{ color: accent, borderColor: accent + '55' }}>
+                  {copied ? 'COPIED ✓' : 'SHARE'}
+                </button>
+                <button className="lb-btn lb-x" onClick={() => setLightbox(null)} aria-label="close">✕</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
